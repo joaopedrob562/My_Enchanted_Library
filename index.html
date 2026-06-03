@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Minha Biblioteca Encantada ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0a0f;
+    --surface: #13101a;
+    --surface2: #1a1525;
+    --border: #2a2035;
+    --accent: #c084fc;
+    --accent2: #f472b6;
+    --accent3: #fb7185;
+    --gold: #fbbf24;
+    --text: #f0e8ff;
+    --muted: #9b8ab0;
+    --read-green: #4ade80;
+    --unread: #6b5a7a;
+    --glow: rgba(192, 132, 252, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(192,132,252,0.07) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 50% at 80% 80%, rgba(244,114,182,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 50% 50%, rgba(251,113,133,0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 60px 24px 40px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, rgba(192,132,252,0.05) 0%, transparent 100%);
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    line-height: 1.1;
+    background: linear-gradient(135deg, #f0e8ff 0%, var(--accent) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+  }
+
+  header p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+
+  .sync-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    font-size: .72rem;
+    color: var(--muted);
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--border);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .sync-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--muted); }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .stats-bar::-webkit-scrollbar { display: none; }
+
+  .stat-item {
+    flex: 1;
+    min-width: 100px;
+    padding: 20px 16px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+    transition: background 0.2s;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: var(--glow); }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  .global-progress {
+    position: relative;
+    z-index: 1;
+    padding: 24px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label span:first-child {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .progress-label span:last-child {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .progress-track {
+    height: 6px;
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent), #a78bfa);
+    transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 0 12px rgba(192, 132, 252, 0.5);
+  }
+
+  .nav-tabs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 0;
+    padding: 0 24px;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    background: var(--surface);
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    padding: 16px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-count {
+    background: var(--surface2);
+    border-radius: 999px;
+    padding: 1px 7px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .tab-btn.active .tab-count {
+    background: rgba(192, 132, 252, 0.2);
+    color: var(--accent);
+  }
+
+  main {
+    position: relative;
+    z-index: 1;
+    padding: 32px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .genre-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    margin-top: 40px;
+  }
+  .genre-header:first-of-type { margin-top: 0; }
+
+  .genre-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .genre-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .genre-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .genre-progress-mini { margin-left: auto; text-align: right; flex-shrink: 0; }
+
+  .genre-pct {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .genre-pct-label { font-size: 11px; color: var(--muted); }
+
+  .books-grid { display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px; }
+
+  .book-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .book-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 3px 0 0 3px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+
+  .book-card.read::before { background: var(--read-green); }
+  .book-card.reading::before { background: var(--gold); }
+  .book-card.recommended::before { background: var(--accent2); }
+
+  .book-card:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+    transform: translateX(2px);
+    box-shadow: 0 4px 24px rgba(192, 132, 252, 0.1);
+  }
+
+  .book-top { display: flex; align-items: flex-start; gap: 16px; }
+
+  .book-order {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem; font-weight: 700;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .book-card.read .book-order {
+    background: rgba(74, 222, 128, 0.1);
+    border-color: var(--read-green);
+    color: var(--read-green);
+  }
+
+  .book-info { flex: 1; min-width: 0; }
+
+  .book-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+
+  .book-author { font-size: 12px; color: var(--accent); font-weight: 500; letter-spacing: 0.3px; }
+
+  .book-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+
+  .badge { padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.3px; }
+  .badge-read { background: rgba(74,222,128,0.15); color: var(--read-green); border: 1px solid rgba(74,222,128,0.3); }
+  .badge-banger { background: rgba(251,191,36,0.15); color: var(--gold); border: 1px solid rgba(251,191,36,0.3); }
+  .badge-must { background: rgba(244,114,182,0.15); color: var(--accent2); border: 1px solid rgba(244,114,182,0.3); }
+  .badge-series { background: rgba(192,132,252,0.15); color: var(--accent); border: 1px solid rgba(192,132,252,0.3); }
+  .badge-standalone { background: rgba(148,163,184,0.1); color: #94a3b8; border: 1px solid rgba(148,163,184,0.2); }
+  .badge-dark { background: rgba(251,113,133,0.12); color: var(--accent3); border: 1px solid rgba(251,113,133,0.3); }
+  .badge-twist { background: rgba(167,139,250,0.15); color: #a78bfa; border: 1px solid rgba(167,139,250,0.3); }
+
+  .book-check-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    background: var(--surface2);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    color: var(--muted);
+  }
+
+  .book-check-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(192,132,252,0.1); }
+
+  .book-card.read .book-check-btn {
+    border-color: var(--read-green);
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--read-green);
+  }
+
+  .book-synopsis {
+    display: none;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .book-card.expanded .book-synopsis { display: block; }
+
+  .synopsis-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    background: rgba(192,132,252,0.06);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: 0.9rem;
+    font-style: normal;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .order-intro {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+    text-align: center;
+  }
+
+  .order-intro h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
+  .order-intro p { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--muted); font-style: italic; }
+
+  .order-tier { margin-bottom: 40px; }
+
+  .tier-label {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tier-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem; font-weight: 700;
+  }
+
+  .tier-1 .tier-num { background: rgba(251,191,36,0.2); color: var(--gold); border: 1px solid rgba(251,191,36,0.4); }
+  .tier-2 .tier-num { background: rgba(192,132,252,0.2); color: var(--accent); border: 1px solid rgba(192,132,252,0.4); }
+  .tier-3 .tier-num { background: rgba(244,114,182,0.2); color: var(--accent2); border: 1px solid rgba(244,114,182,0.4); }
+
+  .tier-text { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; }
+  .tier-desc { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .author-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .author-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 6px; }
+  .author-meta { font-size: 12px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; font-weight: 500; margin-bottom: 12px; }
+  .author-desc { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--muted); font-style: italic; line-height: 1.6; margin-bottom: 14px; }
+  .author-books-mini { display: flex; flex-wrap: wrap; gap: 6px; }
+  .author-book-tag { padding: 4px 12px; border-radius: 999px; font-size: 12px; border: 1px solid var(--border); color: var(--muted); }
+  .author-book-tag.read-tag { border-color: rgba(74,222,128,0.3); color: var(--read-green); background: rgba(74,222,128,0.07); }
+
+  .filter-bar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+
+  .filter-btn {
+    padding: 7px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 12px; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(192,132,252,0.1); }
+
+  .star-rating { display: flex; gap: 3px; margin-top: 10px; align-items: center; }
+
+  .star {
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.15s, filter 0.15s;
+    filter: grayscale(1) opacity(0.35);
+    line-height: 1;
+    user-select: none;
+  }
+
+  .star.lit { filter: grayscale(0) opacity(1); transform: scale(1.05); }
+  .star:hover, .star.hover-lit { filter: grayscale(0) opacity(0.85); transform: scale(1.15); }
+
+  .star-label { font-size: 11px; color: var(--muted); margin-left: 6px; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+  .personal-note-section { margin-top: 14px; }
+
+  .personal-note-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 6px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .personal-note-textarea {
+    width: 100%;
+    min-height: 72px;
+    background: rgba(244,114,182,0.05);
+    border: 1px solid rgba(244,114,182,0.2);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .personal-note-textarea::placeholder { color: var(--muted); font-style: italic; }
+  .personal-note-textarea:focus { border-color: var(--accent2); background: rgba(244,114,182,0.08); }
+
+  .note-saved-indicator { font-size: 11px; color: var(--read-green); margin-top: 4px; opacity: 0; transition: opacity 0.3s; font-family: 'DM Sans', sans-serif; }
+  .note-saved-indicator.show { opacity: 1; }
+
+  .sort-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 20px; flex-wrap: wrap; }
+  .sort-label { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-right: 2px; white-space: nowrap; }
+
+  .sort-btn {
+    padding: 5px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 11px; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .sort-btn:hover, .sort-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(244,114,182,0.1); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .section.active .book-card, .section.active .author-card { animation: fadeUp 0.4s ease both; }
+  .section.active .book-card:nth-child(1) { animation-delay: 0.05s; }
+  .section.active .book-card:nth-child(2) { animation-delay: 0.10s; }
+  .section.active .book-card:nth-child(3) { animation-delay: 0.15s; }
+  .section.active .book-card:nth-child(4) { animation-delay: 0.20s; }
+  .section.active .book-card:nth-child(5) { animation-delay: 0.25s; }
+
+  @media (max-width: 480px) {
+    header { padding: 40px 16px 28px; }
+    main { padding: 24px 16px; }
+    .genre-progress-mini { display: none; }
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-eyebrow">✦ Biblioteca Pessoal ✦</div>
+  <h1>A Minha Biblioteca Encantada ✨</h1>
+  <p>Ohana significa livros 🌺</p>
+  <div class="sync-badge">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span id="sync-text">A carregar...</span>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num" id="statTotal">0</span><span class="stat-label">Livros</span></div>
+  <div class="stat-item"><span class="stat-num" id="statRead">0</span><span class="stat-label">Lidos</span></div>
+  <div class="stat-item"><span class="stat-num" id="statUnread">0</span><span class="stat-label">Por ler</span></div>
+  <div class="stat-item"><span class="stat-num" id="statPct">0%</span><span class="stat-label">Progresso</span></div>
+</div>
+
+<div class="global-progress">
+  <div class="progress-label">
+    <span>Progresso geral</span>
+    <span id="progressText">0 / 0 lidos</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+  </div>
+</div>
+
+<div class="nav-tabs">
+  <button class="tab-btn active" data-tab="all">✦ Todos <span class="tab-count" id="tcAll">0</span></button>
+  <button class="tab-btn" data-tab="thriller">🔪 Thriller <span class="tab-count" id="tcThriller">0</span></button>
+  <button class="tab-btn" data-tab="romance">🌹 Romance <span class="tab-count" id="tcRomance">0</span></button>
+  <button class="tab-btn" data-tab="darkromance">🖤 Dark Romance <span class="tab-count" id="tcDark">0</span></button>
+  <button class="tab-btn" data-tab="psych">🧠 Psicológico <span class="tab-count" id="tcPsych">0</span></button>
+  <button class="tab-btn" data-tab="series">📚 Séries</button>
+  <button class="tab-btn" data-tab="order">📖 Ordem</button>
+  <button class="tab-btn" data-tab="authors">✍️ Autoras</button>
+</div>
+
+<main>
+
+<div class="section active" id="sec-all">
+  <div class="filter-bar">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="lido">✓ Lidos</button>
+    <button class="filter-btn" data-filter="por-ler">📚 Por ler</button>
+    <button class="filter-btn" data-filter="banger">⭐ Bangers</button>
+  </div>
+  <div class="sort-bar">
+    <span class="sort-label">Ordenar:</span>
+    <button class="sort-btn active" data-sort="recentes">🕐 Recentes</button>
+    <button class="sort-btn" data-sort="az">A → Z</button>
+    <button class="sort-btn" data-sort="za">Z → A</button>
+    <button class="sort-btn" data-sort="lidos-primeiro">✓ Lidos primeiro</button>
+    <button class="sort-btn" data-sort="por-ler-primeiro">📚 Por ler primeiro</button>
+    <button class="sort-btn" data-sort="autor">✍️ Autor</button>
+    <button class="sort-btn" data-sort="avaliacao">★ Avaliação</button>
+  </div>
+  <div class="books-grid" id="allBooksGrid"></div>
+</div>
+
+<div class="section" id="sec-thriller">
+  <div class="genre-header">
+    <div class="genre-icon" style="background: rgba(251,113,133,0.15); color: var(--accent3);">🔪</div>
+    <div><div class="genre-title">Thriller & Suspense</div><div class="genre-subtitle">Twists, revelações e finais imprevisíveis</div></div>
+    <div class="genre-progress-mini" id="gpThriller"></div>
+  </div>
+  <div class="books-grid" id="thrillerGrid"></div>
+</div>
+
+<div class="section" id="sec-romance">
+  <div class="genre-header">
+    <div class="genre-icon" style="background: rgba(244,114,182,0.15); color: var(--accent2);">🌹</div>
+    <div><div class="genre-title">Romance</div><div class="genre-subtitle">Histórias de amor que ficam no coração</div></div>
+    <div class="genre-progress-mini" id="gpRomance"></div>
+  </div>
+  <div class="books-grid" id="romanceGrid"></div>
+</div>
+
+<div class="section" id="sec-darkromance">
+  <div class="genre-header">
+    <div class="genre-icon" style="background: rgba(192,132,252,0.12); color: var(--accent);">🖤</div>
+    <div><div class="genre-title">Dark Romance</div><div class="genre-subtitle">Amor intenso, obscuro e perturbador</div></div>
+    <div class="genre-progress-mini" id="gpDark"></div>
+  </div>
+  <div class="books-grid" id="darkGrid"></div>
+</div>
+
+<div class="section" id="sec-psych">
+  <div class="genre-header">
+    <div class="genre-icon" style="background: rgba(167,139,250,0.15); color: #a78bfa;">🧠</div>
+    <div><div class="genre-title">Thriller Psicológico</div><div class="genre-subtitle">Mente, manipulação e realidades distorcidas</div></div>
+    <div class="genre-progress-mini" id="gpPsych"></div>
+  </div>
+  <div class="books-grid" id="psychGrid"></div>
+</div>
+
+<div class="section" id="sec-series">
+  <div class="books-grid" id="seriesGrid"></div>
+</div>
+
+<div class="section" id="sec-order">
+  <div class="order-intro">
+    <h2>Ordem de Leitura Recomendada</h2>
+    <p>Baseada no que já leste e no que vai impressionar mais</p>
+  </div>
+  <div class="order-tier tier-1">
+    <div class="tier-label">
+      <div class="tier-num">1</div>
+      <div><div class="tier-text">⭐ Lê a seguir — Top Priority</div><div class="tier-desc">Os que vais amar mais, com base no teu gosto</div></div>
+    </div>
+    <div class="books-grid" id="tier1Grid"></div>
+  </div>
+  <div class="order-tier tier-2">
+    <div class="tier-label">
+      <div class="tier-num">2</div>
+      <div><div class="tier-text">✦ Próximos na fila</div><div class="tier-desc">Excelentes para depois dos primeiros</div></div>
+    </div>
+    <div class="books-grid" id="tier2Grid"></div>
+  </div>
+  <div class="order-tier tier-3">
+    <div class="tier-label">
+      <div class="tier-num">3</div>
+      <div><div class="tier-text">🌸 Para quando quiseres variar</div><div class="tier-desc">Diferentes mas que vais adorar</div></div>
+    </div>
+    <div class="books-grid" id="tier3Grid"></div>
+  </div>
+</div>
+
+<div class="section" id="sec-authors">
+  <div class="books-grid" id="authorsGrid"></div>
+</div>
+
+</main>
+
+<script>
+// ── SUPABASE ──────────────────────────────────────────────────────────────────
+var SUPA_URL = 'https://qlfcthjpoerndaizfnkt.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFsZmN0aGpwb2VybmRhaXpmbmt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MDY3MDUsImV4cCI6MjA5NTk4MjcwNX0.89MZq2Fe0vY9dKo91ismp4MEQfJlha6V45_fcsuEBKI';
+var USER_ID = 'timon_pumba';
+
+// ── DATA ──────────────────────────────────────────────────────────────────────
+var books = [
+  { id: 1, title: "O Namorado", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher começa a namorar com o homem dos seus sonhos — mas há algo de errado com ele. Quanto mais se aproxima, mais percebe que ele esconde segredos terríveis.", note: "Um dos mais perturbadores da McFadden. O twist final deixa-te de boca aberta." },
+  { id: 2, title: "A Inquilina", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma médica sem dinheiro arrenda um quarto barato — mas a sua senhoria parece esconder algo.", note: "Atmosfera sufocante do início ao fim." },
+  { id: 3, title: "A Criada Está a Ver", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Primeiro livro da série da criada — uma jovem trabalha numa casa onde tudo parece perfeito demais.", note: "Ler antes de 'O Segredo da Criada' e 'O Casamento da Criada'." },
+  { id: 4, title: "O Segredo da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Continuação da série. Os segredos da casa começam a revelar-se e ninguém é quem parece ser.", note: "Sequência direta de 'A Criada Está a Ver'." },
+  { id: 5, title: "O Casamento da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "A conclusão da trilogia. Um casamento está a ser preparado na casa — mas por baixo dos véus e flores escondem-se mentiras.", note: "O melhor da trilogia segundo a maioria das leitoras." },
+  { id: 6, title: "Nunca Minta", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma terapeuta descobre que um dos seus antigos pacientes foi assassinado.", note: "Twist absolutamente insano." },
+  { id: 7, title: "A Professora", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma professora parece ter a vida perfeita — mas a aparência engana.", note: "Muito viciante. Lê-se numa tarde." },
+  { id: 8, title: "A Sete Chaves", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher está presa num casamento com um homem de quem tem medo. Sete tentativas de fuga.", note: "Leitura intensa e emocionalmente brutal." },
+  { id: 9, title: "Não Incomodar", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um hotel isolado. Uma hóspede que ouve coisas estranhas no quarto ao lado.", note: "Atmosfera claustrofóbica fantástica." },
+  { id: 10, title: "A Porta Trancada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher acorda num quarto trancado sem memória de como chegou ali.", note: "Um dos mais originais em termos de estrutura narrativa." },
+  { id: 11, title: "The Perfect Son", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um thriller sobre um filho que parece perfeito demais.", note: "Psicologicamente perturbador." },
+  { id: 12, title: "O Acidente", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Após um acidente de viação, uma mulher começa a lembrar-se de detalhes que não batem certo.", note: "Bom para quando quiseres um thriller mais calmo." },
+  { id: 13, title: "O Escritório", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma jovem começa a trabalhar para um chefe carismático e poderoso.", note: "Tem elementos de thriller e dark romance." },
+  { id: 14, title: "A Mulher no Andar de Cima", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher que raramente sai de casa observa a sua nova vizinha.", note: "Vibes de 'A Mulher na Janela'. Muito bom." },
+  { id: 15, title: "The Ex", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "O ex está de volta — e não quer deixá-la ir.", note: "Perturbador de uma forma muito realista." },
+  { id: 16, title: "Até o Último de Nós", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Num cenário de fim do mundo, um grupo de sobreviventes tem de confiar uns nos outros.", note: "A McFadden num registo diferente, mais épico." },
+  { id: 17, title: "Um por Um", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um grupo fechado. Um assassino entre eles. Cada capítulo uma eliminação.", note: "Tipo Agatha Christie mas mais moderno." },
+  { id: 18, title: "Verity", author: "Colleen Hoover", genre: ["thriller","darkromance","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma escritora descobre o manuscrito inacabado de uma autora famosa — e o que lê é perturbador demais para ser ficção.", note: "O livro mais escuro da CoHo. Vicia de imediato." },
+  { id: 19, title: "O Lado Feio do Amor", author: "Colleen Hoover", genre: ["romance","darkromance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Lily foge para Nova Iorque depois de um relacionamento abusivo. Quando conhece Ryle, tudo parece diferente.", note: "Um dos livros mais importantes que já leste." },
+  { id: 20, title: "Uma Segunda Chance", author: "Colleen Hoover", genre: ["romance"], read: true, banger: true, standalone: false, tier: null, synopsis: "A sequência de 'O Lado Feio do Amor'. Lily tenta reconstruir a sua vida.", note: "Ler depois de 'O Lado Feio do Amor'." },
+  { id: 21, title: "Se Não Fosse Você", author: "Colleen Hoover", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Dois estranhos. Um acidente. Uma ligação impossível de explicar.", note: "Um dos mais queridos das leitoras da CoHo." },
+  { id: 22, title: "It Ends With Us — Livro 3", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "A conclusão da trilogia IEWU.", note: "Ler depois dos dois primeiros obrigatoriamente." },
+  { id: 23, title: "November 9", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Dois estranhos que se encontram apenas um dia por ano, no dia 9 de novembro.", note: "Estrutura narrativa muito original." },
+  { id: 24, title: "Reminders of Him", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma mãe sai da prisão e tenta reconquistar a filha que nunca conheceu.", note: "Um dos mais emotivos de todos. Prepara os lenços." },
+  { id: 25, title: "Ugly Love", author: "Colleen Hoover", genre: ["darkromance","romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Dois adultos. Uma regra: sem sentimentos.", note: "Dark romance da CoHo. Muito intenso e viciante." },
+  { id: 26, title: "Confess", author: "Colleen Hoover", genre: ["romance"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Uma jovem começa a trabalhar num estúdio de arte.", note: "Mais leve que os outros. Bom para variar." },
+  { id: 27, title: "A Paciente Silenciosa", author: "Alex Michaelides", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma famosa pintora atira ao marido e recusa-se a falar para sempre.", note: "O twist final é dos melhores da literatura de thriller." },
+  { id: 28, title: "A Fúria", author: "Alex Michaelides", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um grupo de pessoas numa ilha privada com uma estrela de Hollywood. Um assassinato acontece.", note: "Agatha Christie no século XXI." },
+  { id: 29, title: "As Maiades", author: "Alex Michaelides", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma professora de Cambridge é encontrada morta na ilha grega onde passou a infância.", note: "Ainda melhor que 'A Paciente Silenciosa' segundo muitas leitoras." },
+  { id: 30, title: "Suicidas", author: "Raphael Montes", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um homem cria uma app de suicídio coletivo — e rapidamente perde o controlo.", note: "Muito dark. Literalmente tira o sono." },
+  { id: 31, title: "Jantar Secreto", author: "Raphael Montes", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um jantar de estranhos. Segredos à mesa.", note: "Boa introdução ao autor." },
+  { id: 32, title: "Perfeitos Criminosos", author: "Raphael Montes", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "O livro mais aclamado de Raphael Montes. Um estudante de medicina obcecado por uma mulher.", note: "Muito mais intenso que 'Suicidas'." },
+  { id: 33, title: "Fifty Fifty", author: "Steve Cavanagh", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "Duas irmãs julgadas pelo mesmo crime. Cada uma acusa a outra.", note: "Ler a série Eddie Flynn por ordem." },
+  { id: 34, title: "Thirteen", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 1, synopsis: "Um serial killer infiltra-se no júri de um julgamento.", note: "Ler ANTES de Fifty Fifty. O melhor ponto de entrada." },
+  { id: 35, title: "Às Vezes Minto", author: "Alice Feeney", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Amber está em coma. Pode ouvir tudo à volta mas não consegue mover-se.", note: "Narrador não fiável em modo absoluto." },
+  { id: 36, title: "Rock Paper Scissors", author: "Alice Feeney", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casal vai a um retiro escocês isolado para salvar o casamento.", note: "Um dos melhores thrillers dos últimos anos." },
+  { id: 37, title: "Nada Disto é Verdade", author: "Lisa Jewell", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma podcaster conhece uma família perturbadoramente fascinante.", note: "Lisa Jewell no seu melhor." },
+  { id: 38, title: "A Família da Casa do Fim da Rua", author: "Lisa Jewell", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma mulher começa a suspeitar que os novos vizinhos escondem algo sombrio.", note: "Talvez o melhor livro de Lisa Jewell." },
+  { id: 39, title: "Então Ela Desapareceu", author: "Lisa Jewell", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma adolescente desaparece de um jardim público.", note: "Ótimo para depois de 'A Família da Casa do Fim da Rua'." },
+  { id: 40, title: "Os Dois Morrem no Final", author: "Adam Silvera", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Numa realidade alternativa, uma app notifica-te no dia em que vais morrer.", note: "Vai destroçar-te o coração." },
+  { id: 41, title: "Eles Dois, Verão", author: "Adam Silvera", genre: ["romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Dois rapazes que se detestam ficam presos juntos durante um verão.", note: "Se adoraste 'Os Dois Morrem no Final', este é obrigatório." },
+  { id: 42, title: "Primeira Classe", author: "TL Swan", genre: ["romance","darkromance"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma aeromoça e um CEO poderoso.", note: "Para quando quiseres romance puro e intenso." },
+  { id: 43, title: "The Nanny", author: "TL Swan", genre: ["romance","darkromance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma ama começa a trabalhar para um homem misterioso e distante.", note: "Um dos mais populares da TL Swan." },
+  { id: 44, title: "A Governanta", author: "Samantha Hayes", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma nova governanta numa casa de campo inglesa.", note: "Boa leitura para uma tarde chuvosa." },
+  { id: 45, title: "O Hospital", author: "Leslie Wolfe", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Doentes estão a morrer num hospital de formas que não se conseguem explicar.", note: "Thriller médico intenso." },
+  { id: 46, title: "Nós Já Moramos Aqui", author: "Marcus Kliewer", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma família muda-se para uma casa onde algo parece errado.", note: "Thriller com elementos de horror doméstico." },
+  { id: 47, title: "A Montanha és Tu", author: "Brianna Wiest", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Livro de autoconhecimento sobre como ultrapassar os nossos próprios bloqueios.", note: "Diferente de tudo o resto nesta lista. Muito poderoso." },
+  { id: 48, title: "A Ansiedade Não Manda em Mim", author: "Sara Figueiredo Costa", genre: ["romance"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um guia prático e empático para lidar com a ansiedade.", note: "Não ficção mas muito útil." },
+  { id: 49, title: "Behind Closed Doors", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casal aparentemente perfeito. Mas por detrás das portas fechadas existe um pesadelo.", note: "Se adoraste a McFadden, B.A. Paris é a próxima autora a descobrir." },
+  { id: 50, title: "The Woman in the Window", author: "A.J. Finn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma psicóloga com agorafobia que passa os dias a espiar os vizinhos vê algo que não devia ver.", note: "Vai adorar se gostaste de 'A Mulher no Andar de Cima'." },
+  { id: 51, title: "Gone Girl", author: "Gillian Flynn", genre: ["thriller","psych","darkromance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "No aniversário de casamento, Amy desaparece. O marido é suspeito.", note: "OBRIGATÓRIO. Vai mudar a forma como lês thrillers." },
+  { id: 52, title: "Sharp Objects", author: "Gillian Flynn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma jornalista regressa à cidade natal para cobrir o assassinato de duas jovens.", note: "Mais atmosférico e sombrio que 'Gone Girl'." },
+  { id: 53, title: "Depois da Noite", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Um casal que parece perfeito. Mas todas as noites, quando o marido viaja, algo muda.", note: "Mais leve que 'Behind Closed Doors'." },
+  { id: 54, title: "The Housemaid's Secret", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Millie, a criada, tem um novo emprego numa mansão onde tudo parece perfeito.", note: "Spin-off do universo McFadden." },
+  { id: 55, title: "Twisted Love", author: "Ana Huang", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 1, synopsis: "O irmão mais velho da melhor amiga. Alex é frio, controlador, e proibido.", note: "Se gostaste do lado mais dark e possessivo dos romances, este é perfeito." },
+  { id: 56, title: "Haunting Adeline", author: "H.D. Carlton", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 3, synopsis: "Um stalker que a observa de longe — e depois nem tão de longe.", note: "⚠️ Conteúdo muito dark. Só se estiveres no humor certo." },
+  { id: 57, title: "Como Matar a Tua Família", author: "Bella Mackie", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Grace planeia — metodicamente e sem remorsos — assassinar toda a família que nunca a quis.", note: "Hilariante e perturbador ao mesmo tempo." },
+  { id: 58, title: "All Your Perfects", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Um casal que se amava profundamente mas que o tempo e a dor foram desgastando.", note: "Um dos mais maduros e emocionalmente honestos da CoHo." },
+  { id: 59, title: "Regretting You", author: "Colleen Hoover", genre: ["romance"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Uma mãe e uma filha adolescente que mal se entendem, unidas por uma tragédia.", note: "Mais focado em relação mãe-filha. Emotivo." },
+  { id: 60, title: "Twisted Games", author: "Ana Huang", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Uma princesa e o seu guarda-costas. Ela é intocável.", note: "Ler depois de 'Twisted Love'." },
+  { id: 61, title: "The Guest List", author: "Lucy Foley", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casamento numa ilha irlandesa isolada. Tempestade. Sem escapatória.", note: "Perfeito para quem adorou 'A Fúria'." },
+  { id: 62, title: "The Hunting Party", author: "Lucy Foley", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Um grupo de amigos de Oxford reúne-se para o Ano Novo numa cabana escocesa isolada.", note: "Ler depois de 'The Guest List'." },
+  { id: 63, title: "The Paris Apartment", author: "Lucy Foley", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma jovem vai a Paris visitar o irmão — e ele desaparece.", note: "Lucy Foley num registo mais íntimo." },
+  { id: 64, title: "The Invitation", author: "Lucy Foley", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Um convite para um evento exclusivo numa villa italiana.", note: "Mais lento mas com a mesma atmosfera." },
+  { id: 65, title: "Twisted Hate", author: "Ana Huang", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Jules e Josh detestam-se — ou pensam que sim.", note: "Livro 3 da série Twisted." },
+  { id: 66, title: "Twisted System", author: "Ana Huang", genre: ["darkromance"], read: false, banger: false, standalone: false, tier: 3, synopsis: "A conclusão da série Twisted.", note: "Livro 4 e último da série Twisted." },
+  { id: 67, title: "Dark Places", author: "Gillian Flynn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Libby Day sobreviveu ao massacre da sua família em criança.", note: "O mais brutal dos três livros da Gillian Flynn." },
+  { id: 68, title: "The Accomplice", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 3, synopsis: "Eddie Flynn defende um homem acusado de matar a sua melhor amiga.", note: "Livro 6 da série Eddie Flynn." },
+  { id: 69, title: "Layla", author: "Colleen Hoover", genre: ["romance","thriller"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Leeds e Layla estão apaixonados — até um incidente trágico mudar tudo.", note: "A CoHo mais estranha e surpreendente." },
+  { id: 70, title: "Hopeless", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Sky não tem memória da sua infância. Dean Holder parece conhecê-la de algum lado.", note: "Tem elementos de mistério. Um dos favoritos das fãs antigas da CoHo." },
+];
+
+// ── SUPABASE SYNC ─────────────────────────────────────────────────────────────
+function syncFromCloud() {
+  Promise.all([
+    fetch(SUPA_URL + '/rest/v1/reads?user_id=eq.' + USER_ID + '&select=id', { headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } }),
+    fetch(SUPA_URL + '/rest/v1/notes?user_id=eq.' + USER_ID + '&select=arc_id,note,rating', { headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } })
+  ]).then(function(responses) {
+    return Promise.all([responses[0].json(), responses[1].json()]);
+  }).then(function(results) {
+    var reads = results[0];
+    var notes = results[1];
+    if (Array.isArray(reads)) {
+      reads.forEach(function(r) {
+        var book = books.find(function(b) { return String(b.id) === String(r.id); });
+        if (book) book.read = true;
+      });
+    }
+    if (Array.isArray(notes)) {
+      notes.forEach(function(r) {
+        var book = books.find(function(b) { return String(b.id) === r.arc_id; });
+        if (book) { book.personalNote = r.note || ''; book.rating = r.rating || 0; }
+      });
+    }
+    var dot = document.getElementById('sync-dot');
+    dot.style.cssText = 'background:#4ade80;box-shadow:0 0 6px #4ade80;animation:pulse 2s infinite;width:6px;height:6px;border-radius:50%';
+    document.getElementById('sync-text').textContent = 'Sincronizado ✨';
+    renderAll();
+  }).catch(function() {
+    document.getElementById('sync-text').textContent = 'Offline';
+    renderAll();
+  });
+}
+
+function saveReadToCloud(bookId, isRead) {
+  var id = String(bookId);
+  if (isRead) {
+    fetch(SUPA_URL + '/rest/v1/reads', { method: 'POST', headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', 'Prefer': 'ignore-duplicates' }, body: JSON.stringify([{ id: id, user_id: USER_ID }]) }).catch(function(){});
+  } else {
+    fetch(SUPA_URL + '/rest/v1/reads?id=eq.' + id + '&user_id=eq.' + USER_ID, { method: 'DELETE', headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY } }).catch(function(){});
+  }
+}
+
+function saveNoteToCloud(bookId, note, rating) {
+  fetch(SUPA_URL + '/rest/v1/notes', { method: 'POST', headers: { 'apikey': SUPA_KEY, 'Authorization': 'Bearer ' + SUPA_KEY, 'Content-Type': 'application/json', 'Prefer': 'resolution=merge-duplicates' }, body: JSON.stringify([{ arc_id: String(bookId), user_id: USER_ID, note: note, rating: rating, updated_at: new Date().toISOString() }]) }).catch(function(){});
+}
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+var STORAGE_KEY = 'enchanted-library-v1';
+var currentFilter = 'todos';
+var currentSort = 'recentes';
+
+function loadLocalState() {
+  try {
+    var saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      var state = JSON.parse(saved);
+      state.forEach(function(s) {
+        var book = books.find(function(b) { return b.id === s.id; });
+        if (book) { book.read = s.read; book.rating = s.rating || 0; book.personalNote = s.personalNote || ''; }
+      });
+    }
+  } catch(e) {}
+}
+
+function saveLocalState() {
+  var state = books.map(function(b) { return { id: b.id, read: b.read, rating: b.rating || 0, personalNote: b.personalNote || '' }; });
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+var STAR_LABELS = ['', 'Não gostei', 'Mais ou menos', 'Gostei', 'Adorei', '★ Favorito!'];
+
+function setRating(bookId, rating) {
+  var book = books.find(function(b) { return b.id === bookId; });
+  if (!book) return;
+  book.rating = (book.rating === rating) ? 0 : rating;
+  saveLocalState();
+  saveNoteToCloud(bookId, book.personalNote || '', book.rating);
+  renderAll();
+}
+
+function saveNote(bookId) {
+  var book = books.find(function(b) { return b.id === bookId; });
+  if (!book) return;
+  var ta = document.getElementById('note-' + bookId);
+  if (!ta) return;
+  book.personalNote = ta.value;
+  saveLocalState();
+  saveNoteToCloud(bookId, book.personalNote, book.rating || 0);
+  var ind = document.getElementById('note-saved-' + bookId);
+  if (ind) { ind.classList.add('show'); setTimeout(function() { ind.classList.remove('show'); }, 2000); }
+}
+
+function toggleRead(bookId, event) {
+  event.stopPropagation();
+  var book = books.find(function(b) { return b.id === bookId; });
+  if (!book) return;
+  book.read = !book.read;
+  saveLocalState();
+  saveReadToCloud(bookId, book.read);
+  renderAll();
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function createBookCard(book, showOrder) {
+  var div = document.createElement('div');
+  div.className = 'book-card' + (book.read ? ' read' : '');
+
+  var badges = [];
+  if (book.read) badges.push('<span class="badge badge-read">✓ Lido</span>');
+  if (book.banger) badges.push('<span class="badge badge-banger">⭐ Banger</span>');
+  if (!book.standalone) badges.push('<span class="badge badge-series">📚 Série</span>');
+  if (book.genre.includes('darkromance')) badges.push('<span class="badge badge-dark">🖤 Dark</span>');
+  if (book.genre.includes('psych')) badges.push('<span class="badge badge-twist">🧠 Twist</span>');
+
+  var orderNum = (showOrder && book.tier) ? '<div class="book-order">' + book.tier + '</div>' : '';
+  var rating = book.rating || 0;
+  var starsHTML = [1,2,3,4,5].map(function(n) {
+    return '<span class="star' + (n <= rating ? ' lit' : '') + '" data-star="' + book.id + '-' + n + '" data-bookid="' + book.id + '" data-n="' + n + '">★</span>';
+  }).join('');
+  var starLabel = STAR_LABELS[rating] || 'Avalia este livro';
+
+  var noteHTML = book.read ? (
+    '<div class="personal-note-section" onclick="event.stopPropagation()">' +
+    '<div class="personal-note-label">✏️ A minha nota</div>' +
+    '<textarea class="personal-note-textarea" id="note-' + book.id + '" placeholder="O que achaste?" data-bookid="' + book.id + '">' + (book.personalNote || '') + '</textarea>' +
+    '<div class="note-saved-indicator" id="note-saved-' + book.id + '">✓ Guardado</div>' +
+    '</div>'
+  ) : '';
+
+  div.innerHTML =
+    '<div class="book-top">' +
+    orderNum +
+    '<div class="book-info">' +
+    '<div class="book-title">' + book.title + '</div>' +
+    '<div class="book-author">' + book.author + '</div>' +
+    '<div class="book-badges">' + badges.join('') + '</div>' +
+    (book.read ? '<div class="star-rating" id="stars-' + book.id + '">' + starsHTML + '<span class="star-label">' + starLabel + '</span></div>' : '') +
+    '</div>' +
+    '<button class="book-check-btn" data-toggle="' + book.id + '" title="' + (book.read ? 'Marcar como não lido' : 'Marcar como lido') + '">' + (book.read ? '✓' : '○') + '</button>' +
+    '</div>' +
+    '<div class="book-synopsis">' +
+    book.synopsis +
+    (book.note ? '<div class="synopsis-note">💬 ' + book.note + '</div>' : '') +
+    noteHTML +
+    '</div>';
+
+  div.addEventListener('click', function(e) {
+    if (e.target.closest('.book-check-btn') || e.target.closest('.personal-note-section') || e.target.closest('.star-rating')) return;
+    div.classList.toggle('expanded');
+  });
+
+  return div;
+}
+
+function renderGenreGrid(gridId, genreFilter, progressId) {
+  var grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  var filtered = books.filter(function(b) { return b.genre.includes(genreFilter); });
+  filtered.forEach(function(b) { grid.appendChild(createBookCard(b)); });
+  if (progressId) {
+    var readCount = filtered.filter(function(b) { return b.read; }).length;
+    var pct = filtered.length ? Math.round(readCount / filtered.length * 100) : 0;
+    var el = document.getElementById(progressId);
+    if (el) {
+      var color = pct === 100 ? 'var(--read-green)' : 'var(--accent)';
+      el.innerHTML = '<div class="genre-pct" style="color:' + color + '">' + pct + '%</div><div class="genre-pct-label">' + readCount + '/' + filtered.length + '</div>';
+    }
+  }
+}
+
+function applySort(arr, sort) {
+  var sorted = arr.slice();
+  if (sort === 'az') sorted.sort(function(a,b) { return a.title.localeCompare(b.title, 'pt'); });
+  else if (sort === 'za') sorted.sort(function(a,b) { return b.title.localeCompare(a.title, 'pt'); });
+  else if (sort === 'lidos-primeiro') sorted.sort(function(a,b) { return (b.read ? 1 : 0) - (a.read ? 1 : 0); });
+  else if (sort === 'por-ler-primeiro') sorted.sort(function(a,b) { return (a.read ? 1 : 0) - (b.read ? 1 : 0); });
+  else if (sort === 'autor') sorted.sort(function(a,b) { return a.author.localeCompare(b.author, 'pt') || a.title.localeCompare(b.title, 'pt'); });
+  else if (sort === 'avaliacao') sorted.sort(function(a,b) { return (b.rating||0) - (a.rating||0); });
+  return sorted;
+}
+
+function renderAllGrid(filter, sort) {
+  if (filter !== undefined) currentFilter = filter;
+  if (sort !== undefined) currentSort = sort;
+  var grid = document.getElementById('allBooksGrid');
+  grid.innerHTML = '';
+  var filtered = books.slice();
+  if (currentFilter === 'lido') filtered = filtered.filter(function(b) { return b.read; });
+  else if (currentFilter === 'por-ler') filtered = filtered.filter(function(b) { return !b.read; });
+  else if (currentFilter === 'banger') filtered = filtered.filter(function(b) { return b.banger; });
+  filtered = applySort(filtered, currentSort);
+  filtered.forEach(function(b) { grid.appendChild(createBookCard(b)); });
+}
+
+function renderOrderGrid() {
+  [1, 2, 3].forEach(function(tier) {
+    var grid = document.getElementById('tier' + tier + 'Grid');
+    grid.innerHTML = '';
+    books.filter(function(b) { return b.tier === tier; }).forEach(function(b) { grid.appendChild(createBookCard(b, true)); });
+  });
+}
+
+function renderAuthors() {
+  var grid = document.getElementById('authorsGrid');
+  grid.innerHTML = '';
+  var authorData = [
+    { name: "Freida McFadden", meta: "Thriller Psicológico · Autora Favorita", desc: "Rainha absoluta do thriller doméstico. Cada livro tem um twist que não vês a vir.", books: books.filter(function(b) { return b.author === "Freida McFadden"; }) },
+    { name: "Colleen Hoover", meta: "Romance · Dark Romance", desc: "A rainha do BookTok. Escreve histórias de amor que destroçam o coração e o recolam.", books: books.filter(function(b) { return b.author === "Colleen Hoover"; }) },
+    { name: "Alex Michaelides", meta: "Thriller Psicológico · Atmosférico", desc: "Escreve thrillers intelectuais com uma elegância rara.", books: books.filter(function(b) { return b.author === "Alex Michaelides"; }) },
+    { name: "Gillian Flynn", meta: "Thriller · Dark", desc: "A escritora que inventou o 'dark domestic thriller'.", books: books.filter(function(b) { return b.author === "Gillian Flynn"; }) },
+    { name: "Lisa Jewell", meta: "Thriller · Drama Familiar", desc: "Especialista em thrillers sobre famílias com segredos enterrados.", books: books.filter(function(b) { return b.author === "Lisa Jewell"; }) },
+    { name: "Lucy Foley", meta: "Thriller · Ilha Isolada", desc: "Especialista em thrillers de grupo fechado num lugar isolado.", books: books.filter(function(b) { return b.author === "Lucy Foley"; }) },
+    { name: "Bella Mackie", meta: "Thriller · Humor Negro", desc: "Escreveu um dos thrillers mais originais dos últimos anos.", books: books.filter(function(b) { return b.author === "Bella Mackie"; }) },
+    { name: "Raphael Montes", meta: "Thriller Brasileiro · Perturbador", desc: "O autor brasileiro mais dark desta lista.", books: books.filter(function(b) { return b.author === "Raphael Montes"; }) },
+  ];
+  authorData.forEach(function(author) {
+    var card = document.createElement('div');
+    card.className = 'author-card';
+    var bookTags = author.books.map(function(b) {
+      return '<span class="author-book-tag ' + (b.read ? 'read-tag' : '') + '">' + (b.read ? '✓ ' : '') + b.title + '</span>';
+    }).join('');
+    card.innerHTML = '<div class="author-name">' + author.name + '</div><div class="author-meta">' + author.meta + '</div><div class="author-desc">' + author.desc + '</div><div class="author-books-mini">' + bookTags + '</div>';
+    grid.appendChild(card);
+  });
+}
+
+function renderSeries() {
+  var grid = document.getElementById('seriesGrid');
+  grid.innerHTML = '';
+  var seriesDefs = [
+    { name: "🔪 Trilogia da Criada", author: "Freida McFadden", color: "var(--accent3)", bg: "rgba(251,113,133,0.08)", order: ["A Criada Está a Ver", "O Segredo da Criada", "O Casamento da Criada"] },
+    { name: "🔪 Série Eddie Flynn", author: "Steve Cavanagh", color: "var(--accent)", bg: "rgba(192,132,252,0.08)", order: ["Thirteen", "Fifty Fifty", "The Accomplice"] },
+    { name: "🖤 Série Twisted", author: "Ana Huang", color: "var(--accent2)", bg: "rgba(244,114,182,0.08)", order: ["Twisted Love", "Twisted Games", "Twisted Hate", "Twisted System"] },
+    { name: "🧠 Trilogia Dark — Gillian Flynn", author: "Gillian Flynn", color: "#a78bfa", bg: "rgba(167,139,250,0.08)", order: ["Gone Girl", "Sharp Objects", "Dark Places"] },
+    { name: "🌹 Universo It Ends With Us", author: "Colleen Hoover", color: "var(--accent2)", bg: "rgba(244,114,182,0.08)", order: ["O Lado Feio do Amor", "Uma Segunda Chance", "It Ends With Us — Livro 3"] },
+    { name: "🔪 Lucy Foley — Grupo Isolado", author: "Lucy Foley", color: "var(--gold)", bg: "rgba(251,191,36,0.08)", order: ["The Guest List", "The Hunting Party", "The Paris Apartment", "The Invitation"] },
+  ];
+  seriesDefs.forEach(function(series) {
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'background:' + series.bg + ';border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:16px;';
+    var seriesBooks = series.order.map(function(title) { return books.find(function(b) { return b.title === title; }); }).filter(Boolean);
+    var readCount = seriesBooks.filter(function(b) { return b.read; }).length;
+    var pct = seriesBooks.length ? Math.round(readCount / seriesBooks.length * 100) : 0;
+    var booksHTML = seriesBooks.map(function(book, i) {
+      return '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);">' +
+        '<div style="width:24px;height:24px;border-radius:6px;background:' + (book.read ? 'rgba(74,222,128,0.15)' : 'var(--surface2)') + ';border:1px solid ' + (book.read ? 'rgba(74,222,128,0.4)' : 'var(--border)') + ';display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:' + (book.read ? 'var(--read-green)' : 'var(--muted)') + ';flex-shrink:0;">' + (i + 1) + '</div>' +
+        '<div style="flex:1;min-width:0;"><div style="font-family:\'Playfair Display\',serif;font-size:0.95rem;font-weight:700;color:var(--text);">' + book.title + '</div><div style="font-size:11px;color:var(--muted);margin-top:1px;">' + book.author + '</div></div>' +
+        '<button data-toggle="' + book.id + '" style="width:28px;height:28px;border-radius:50%;border:1.5px solid ' + (book.read ? 'var(--read-green)' : 'var(--border)') + ';background:' + (book.read ? 'rgba(74,222,128,0.1)' : 'var(--surface2)') + ';color:' + (book.read ? 'var(--read-green)' : 'var(--muted)') + ';cursor:pointer;font-size:0.85rem;display:flex;align-items:center;justify-content:center;">' + (book.read ? '✓' : '○') + '</button>' +
+        '</div>';
+    }).join('');
+    wrapper.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">' +
+      '<div><div style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:' + series.color + ';">' + series.name + '</div><div style="font-size:11px;color:var(--muted);margin-top:2px;letter-spacing:1px;text-transform:uppercase;">' + series.author + '</div></div>' +
+      '<div style="text-align:right;"><div style="font-family:\'Playfair Display\',serif;font-size:1.1rem;font-weight:700;color:' + series.color + ';">' + pct + '%</div><div style="font-size:11px;color:var(--muted);">' + readCount + '/' + seriesBooks.length + '</div></div></div>' +
+      '<div style="height:4px;background:var(--border);border-radius:999px;margin-bottom:14px;overflow:hidden;"><div style="height:100%;width:' + pct + '%;background:' + series.color + ';border-radius:999px;transition:width 0.6s ease;"></div></div>' +
+      booksHTML;
+    grid.appendChild(wrapper);
+  });
+}
+
+function updateStats() {
+  var total = books.length;
+  var read = books.filter(function(b) { return b.read; }).length;
+  var pct = Math.round(read / total * 100);
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statRead').textContent = read;
+  document.getElementById('statUnread').textContent = total - read;
+  document.getElementById('statPct').textContent = pct + '%';
+  document.getElementById('progressText').textContent = read + ' / ' + total + ' lidos';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('tcAll').textContent = total;
+  document.getElementById('tcThriller').textContent = books.filter(function(b) { return b.genre.includes('thriller'); }).length;
+  document.getElementById('tcRomance').textContent = books.filter(function(b) { return b.genre.includes('romance'); }).length;
+  document.getElementById('tcDark').textContent = books.filter(function(b) { return b.genre.includes('darkromance'); }).length;
+  document.getElementById('tcPsych').textContent = books.filter(function(b) { return b.genre.includes('psych'); }).length;
+}
+
+function renderAll() {
+  renderAllGrid();
+  renderGenreGrid('thrillerGrid', 'thriller', 'gpThriller');
+  renderGenreGrid('romanceGrid', 'romance', 'gpRomance');
+  renderGenreGrid('darkGrid', 'darkromance', 'gpDark');
+  renderGenreGrid('psychGrid', 'psych', 'gpPsych');
+  renderSeries();
+  renderOrderGrid();
+  renderAuthors();
+  updateStats();
+}
+
+// ── EVENT DELEGATION ──────────────────────────────────────────────────────────
+document.addEventListener('click', function(e) {
+  // Tab buttons
+  var tabBtn = e.target.closest('[data-tab]');
+  if (tabBtn) {
+    document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    var sec = document.getElementById('sec-' + tabBtn.dataset.tab);
+    if (sec) sec.classList.add('active');
+    tabBtn.classList.add('active');
+    return;
+  }
+  // Filter buttons
+  var filterBtn = e.target.closest('[data-filter]');
+  if (filterBtn) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    filterBtn.classList.add('active');
+    renderAllGrid(filterBtn.dataset.filter, currentSort);
+    return;
+  }
+  // Sort buttons
+  var sortBtn = e.target.closest('[data-sort]');
+  if (sortBtn) {
+    document.querySelectorAll('.sort-btn').forEach(function(b) { b.classList.remove('active'); });
+    sortBtn.classList.add('active');
+    renderAllGrid(currentFilter, sortBtn.dataset.sort);
+    return;
+  }
+  // Toggle read
+  var toggleBtn = e.target.closest('[data-toggle]');
+  if (toggleBtn) {
+    toggleRead(parseInt(toggleBtn.dataset.toggle, 10), e);
+    return;
+  }
+  // Stars
+  var star = e.target.closest('[data-n]');
+  if (star && star.classList.contains('star')) {
+    setRating(parseInt(star.dataset.bookid, 10), parseInt(star.dataset.n, 10));
+    return;
+  }
+});
+
+// Star hover
+document.addEventListener('mouseover', function(e) {
+  var star = e.target.closest('[data-n]');
+  if (star && star.classList.contains('star')) {
+    var bookId = parseInt(star.dataset.bookid, 10);
+    var n = parseInt(star.dataset.n, 10);
+    for (var i = 1; i <= 5; i++) {
+      var el = document.querySelector('[data-star="' + bookId + '-' + i + '"]');
+      if (el) el.classList.toggle('hover-lit', i <= n);
+    }
+  }
+});
+
+document.addEventListener('mouseout', function(e) {
+  var star = e.target.closest('[data-n]');
+  if (star && star.classList.contains('star')) {
+    var bookId = parseInt(star.dataset.bookid, 10);
+    for (var i = 1; i <= 5; i++) {
+      var el = document.querySelector('[data-star="' + bookId + '-' + i + '"]');
+      if (el) el.classList.remove('hover-lit');
+    }
+  }
+});
+
+// Note textarea
+document.addEventListener('input', function(e) {
+  var ta = e.target.closest('.personal-note-textarea');
+  if (ta && ta.dataset.bookid) {
+    saveNote(parseInt(ta.dataset.bookid, 10));
+  }
+});
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadLocalState();
+syncFromCloud();
+</script>
+</body>
+</html>
