@@ -366,7 +366,7 @@
     color: var(--muted);
   }
 
-  .book-check-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(192,132,252,0.1); }
+  .book-check-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(192, 132, 252, 0.1); }
 
   .book-card.read .book-check-btn {
     border-color: var(--read-green);
@@ -464,7 +464,7 @@
     transition: all 0.2s;
   }
 
-  .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(192,132,252,0.1); }
+  .filter-btn:hover, .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(192, 132, 252, 0.1); }
 
   .star-rating { display: flex; gap: 3px; margin-top: 10px; align-items: center; }
 
@@ -587,6 +587,7 @@
   <button class="tab-btn" data-tab="romance">🌹 Romance <span class="tab-count" id="tcRomance">0</span></button>
   <button class="tab-btn" data-tab="darkromance">🖤 Dark Romance <span class="tab-count" id="tcDark">0</span></button>
   <button class="tab-btn" data-tab="psych">🧠 Psicológico <span class="tab-count" id="tcPsych">0</span></button>
+  <button class="tab-btn" data-tab="buy">🛒 Comprar <span class="tab-count" id="tcBuy">0</span></button>
   <button class="tab-btn" data-tab="series">📚 Séries</button>
   <button class="tab-btn" data-tab="order">📖 Ordem</button>
   <button class="tab-btn" data-tab="authors">✍️ Autoras</button>
@@ -650,6 +651,14 @@
   <div class="books-grid" id="psychGrid"></div>
 </div>
 
+<div class="section" id="sec-buy">
+  <div class="genre-header">
+    <div class="genre-icon" style="background: rgba(251,191,36,0.15); color: var(--gold);">🛒</div>
+    <div><div class="genre-title">Lista de Compras / Instalar</div><div class="genre-subtitle">Livros que ainda te faltam ler ou adquirir</div></div>
+  </div>
+  <div class="books-grid" id="buyGrid"></div>
+</div>
+
 <div class="section" id="sec-series">
   <div class="books-grid" id="seriesGrid"></div>
 </div>
@@ -696,11 +705,11 @@ var USER_ID = 'timon_pumba';
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
 var books = [
-  { id: 1, title: "O Namorado", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher começa a namorar com o homem dos seus sonhos — mas há algo de errado com ele. Quanto mais se aproxima, mais percebe que ele esconde segredos terríveis.", note: "Um dos mais perturbadores da McFadden. O twist final deixa-te de boca aberta." },
+  { id: 1, title: "O Namorado", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma mulher começa a namorar com o homem dos seus sonhos — mas há algo de errado com ele (capa verde).", note: "O novo banger da McFadden com uma reviravolta insana." },
   { id: 2, title: "A Inquilina", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma médica sem dinheiro arrenda um quarto barato — mas a sua senhoria parece esconder algo.", note: "Atmosfera sufocante do início ao fim." },
-  { id: 3, title: "A Criada Está a Ver", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Primeiro livro da série da criada — uma jovem trabalha numa casa onde tudo parece perfeito demais.", note: "Ler antes de 'O Segredo da Criada' e 'O Casamento da Criada'." },
-  { id: 4, title: "O Segredo da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Continuação da série. Os segredos da casa começam a revelar-se e ninguém é quem parece ser.", note: "Sequência direta de 'A Criada Está a Ver'." },
-  { id: 5, title: "O Casamento da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "A conclusão da trilogia. Um casamento está a ser preparado na casa — mas por baixo dos véus e flores escondem-se mentiras.", note: "O melhor da trilogia segundo a maioria das leitoras." },
+  { id: 3, title: "A Criada Está a Ver", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Primeiro livro da série da criada — uma jovem trabalha numa casa onde tudo parece perfeito demais.", note: "Livro 1 da série Housemaid." },
+  { id: 4, title: "O Segredo da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: false, tier: null, synopsis: "Continuação da série. Os segredos da casa começam a revelar-se e ninguém é quem parece ser.", note: "Livro 2 da série Housemaid." },
+  { id: 5, title: "O Casamento da Criada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "A conclusão da trilogia original da criada. Um casamento esconde mentiras terríveis sob o véu.", note: "Livro 3 da série Housemaid." },
   { id: 6, title: "Nunca Minta", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma terapeuta descobre que um dos seus antigos pacientes foi assassinado.", note: "Twist absolutamente insano." },
   { id: 7, title: "A Professora", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma professora parece ter a vida perfeita — mas a aparência engana.", note: "Muito viciante. Lê-se numa tarde." },
   { id: 8, title: "A Sete Chaves", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher está presa num casamento com um homem de quem tem medo. Sete tentativas de fuga.", note: "Leitura intensa e emocionalmente brutal." },
@@ -708,17 +717,17 @@ var books = [
   { id: 10, title: "A Porta Trancada", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher acorda num quarto trancado sem memória de como chegou ali.", note: "Um dos mais originais em termos de estrutura narrativa." },
   { id: 11, title: "The Perfect Son", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um thriller sobre um filho que parece perfeito demais.", note: "Psicologicamente perturbador." },
   { id: 12, title: "O Acidente", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Após um acidente de viação, uma mulher começa a lembrar-se de detalhes que não batem certo.", note: "Bom para quando quiseres um thriller mais calmo." },
-  { id: 13, title: "O Escritório", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma jovem começa a trabalhar para um chefe carismático e poderoso.", note: "Tem elementos de thriller e dark romance." },
+  { id: 13, title: "O Escritório", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma jovem começa a trabalhar para um chefe carismático e poderoso.", note: "Tem elements de thriller e dark romance." },
   { id: 14, title: "A Mulher no Andar de Cima", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma mulher que raramente sai de casa observa a sua nova vizinha.", note: "Vibes de 'A Mulher na Janela'. Muito bom." },
   { id: 15, title: "The Ex", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "O ex está de volta — e não quer deixá-la ir.", note: "Perturbador de uma forma muito realista." },
-  { id: 16, title: "Até o Último de Nós", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Num cenário de fim do mundo, um grupo de sobreviventes tem de confiar uns nos outros.", note: "A McFadden num registo diferente, mais épico." },
+  { id: 16, title: "Até o Último de Nós", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Num cenário de fim do mundo, um group de sobreviventes tem de confiar uns nos outros.", note: "A McFadden num registo diferente, mais épico." },
   { id: 17, title: "Um por Um", author: "Freida McFadden", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um grupo fechado. Um assassino entre eles. Cada capítulo uma eliminação.", note: "Tipo Agatha Christie mas mais moderno." },
   { id: 18, title: "Verity", author: "Colleen Hoover", genre: ["thriller","darkromance","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma escritora descobre o manuscrito inacabado de uma autora famosa — e o que lê é perturbador demais para ser ficção.", note: "O livro mais escuro da CoHo. Vicia de imediato." },
   { id: 19, title: "O Lado Feio do Amor", author: "Colleen Hoover", genre: ["romance","darkromance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Lily foge para Nova Iorque depois de um relacionamento abusivo. Quando conhece Ryle, tudo parece diferente.", note: "Um dos livros mais importantes que já leste." },
   { id: 20, title: "Uma Segunda Chance", author: "Colleen Hoover", genre: ["romance"], read: true, banger: true, standalone: false, tier: null, synopsis: "A sequência de 'O Lado Feio do Amor'. Lily tenta reconstruir a sua vida.", note: "Ler depois de 'O Lado Feio do Amor'." },
   { id: 21, title: "Se Não Fosse Você", author: "Colleen Hoover", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Dois estranhos. Um acidente. Uma ligação impossível de explicar.", note: "Um dos mais queridos das leitoras da CoHo." },
   { id: 22, title: "It Ends With Us — Livro 3", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "A conclusão da trilogia IEWU.", note: "Ler depois dos dois primeiros obrigatoriamente." },
-  { id: 23, title: "November 9", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Dois estranhos que se encontram apenas um dia por ano, no dia 9 de novembro.", note: "Estrutura narrativa muito original." },
+  { id: 23, title: "November 9", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Dois estranhos que se encontram apenas um dia por ano, no dia 9 de novembro.", note: "Estrutura narrativa romântica muito original." },
   { id: 24, title: "Reminders of Him", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma mãe sai da prisão e tenta reconquistar a filha que nunca conheceu.", note: "Um dos mais emotivos de todos. Prepara os lenços." },
   { id: 25, title: "Ugly Love", author: "Colleen Hoover", genre: ["darkromance","romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Dois adultos. Uma regra: sem sentimentos.", note: "Dark romance da CoHo. Muito intenso e viciante." },
   { id: 26, title: "Confess", author: "Colleen Hoover", genre: ["romance"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Uma jovem começa a trabalhar num estúdio de arte.", note: "Mais leve que os outros. Bom para variar." },
@@ -726,33 +735,33 @@ var books = [
   { id: 28, title: "A Fúria", author: "Alex Michaelides", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um grupo de pessoas numa ilha privada com uma estrela de Hollywood. Um assassinato acontece.", note: "Agatha Christie no século XXI." },
   { id: 29, title: "As Maiades", author: "Alex Michaelides", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma professora de Cambridge é encontrada morta na ilha grega onde passou a infância.", note: "Ainda melhor que 'A Paciente Silenciosa' segundo muitas leitoras." },
   { id: 30, title: "Suicidas", author: "Raphael Montes", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Um homem cria uma app de suicídio coletivo — e rapidamente perde o controlo.", note: "Muito dark. Literalmente tira o sono." },
-  { id: 31, title: "Jantar Secreto", author: "Raphael Montes", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um jantar de estranhos. Segredos à mesa.", note: "Boa introdução ao autor." },
-  { id: 32, title: "Perfeitos Criminosos", author: "Raphael Montes", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "O livro mais aclamado de Raphael Montes. Um estudante de medicina obcecado por uma mulher.", note: "Muito mais intenso que 'Suicidas'." },
-  { id: 33, title: "Fifty Fifty", author: "Steve Cavanagh", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "Duas irmãs julgadas pelo mesmo crime. Cada uma acusa a outra.", note: "Ler a série Eddie Flynn por ordem." },
-  { id: 34, title: "Thirteen", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 1, synopsis: "Um serial killer infiltra-se no júri de um julgamento.", note: "Ler ANTES de Fifty Fifty. O melhor ponto de entrada." },
+  { id: 31, title: "Jantar Secreto", author: "Raphael Montes", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Um jantar de estranhos onde segredos sinistros e canibalismo entram no menu.", note: "Thriller brasileiro visceral de Raphael Montes." },
+  { id: 32, title: "Perfeitos Criminosos", author: "Raphael Montes", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Um thriller repleto de reviravoltas sobre jovens envolvidos num crime macabro.", note: "Falta adicionar 'Tese de Morte' para completar o autor." },
+  { id: 33, title: "Fifty Fifty", author: "Steve Cavanagh", genre: ["thriller","psych"], read: true, banger: true, standalone: false, tier: null, synopsis: "Duas irmãs julgadas pelo mesmo crime. Cada uma acusa a outra.", note: "Livro 4 da série Eddie Flynn." },
+  { id: 34, title: "Thirteen", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 1, synopsis: "Um serial killer infiltra-se no júri de um julgamento mediático.", note: "Livro 5 da série Eddie Flynn." },
   { id: 35, title: "Às Vezes Minto", author: "Alice Feeney", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Amber está em coma. Pode ouvir tudo à volta mas não consegue mover-se.", note: "Narrador não fiável em modo absoluto." },
   { id: 36, title: "Rock Paper Scissors", author: "Alice Feeney", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casal vai a um retiro escocês isolado para salvar o casamento.", note: "Um dos melhores thrillers dos últimos anos." },
-  { id: 37, title: "Nada Disto é Verdade", author: "Lisa Jewell", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Uma podcaster conhece uma família perturbadoramente fascinante.", note: "Lisa Jewell no seu melhor." },
+  { id: 37, title: "Nada Disto é Verdade", author: "Lisa Jewell", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma podcaster descobre uma mulher peculiar no seu aniversário, desencadeando um pesadelo.", note: "Lisa Jewell no seu melhor estilo doméstico banger." },
   { id: 38, title: "A Família da Casa do Fim da Rua", author: "Lisa Jewell", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma mulher começa a suspeitar que os novos vizinhos escondem algo sombrio.", note: "Talvez o melhor livro de Lisa Jewell." },
   { id: 39, title: "Então Ela Desapareceu", author: "Lisa Jewell", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma adolescente desaparece de um jardim público.", note: "Ótimo para depois de 'A Família da Casa do Fim da Rua'." },
-  { id: 40, title: "Os Dois Morrem no Final", author: "Adam Silvera", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Numa realidade alternativa, uma app notifica-te no dia em que vais morrer.", note: "Vai destroçar-te o coração." },
+  { id: 40, title: "Os Dois Morrem no Final", author: "Adam Silvera", genre: ["romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Numa realidade alternativa, uma app notifica-te no dia em que vais morrer.", note: "Vai destroçar-te o coração." },
   { id: 41, title: "Eles Dois, Verão", author: "Adam Silvera", genre: ["romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Dois rapazes que se detestam ficam presos juntos durante um verão.", note: "Se adoraste 'Os Dois Morrem no Final', este é obrigatório." },
   { id: 42, title: "Primeira Classe", author: "TL Swan", genre: ["romance","darkromance"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma aeromoça e um CEO poderoso.", note: "Para quando quiseres romance puro e intenso." },
   { id: 43, title: "The Nanny", author: "TL Swan", genre: ["romance","darkromance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma ama começa a trabalhar para um homem misterioso e distante.", note: "Um dos mais populares da TL Swan." },
   { id: 44, title: "A Governanta", author: "Samantha Hayes", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma nova governanta numa casa de campo inglesa.", note: "Boa leitura para uma tarde chuvosa." },
   { id: 45, title: "O Hospital", author: "Leslie Wolfe", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Doentes estão a morrer num hospital de formas que não se conseguem explicar.", note: "Thriller médico intenso." },
-  { id: 46, title: "Nós Já Moramos Aqui", author: "Marcus Kliewer", genre: ["thriller","psych"], read: true, banger: false, standalone: true, tier: null, synopsis: "Uma família muda-se para uma casa onde algo parece errado.", note: "Thriller com elementos de horror doméstico." },
-  { id: 47, title: "A Montanha és Tu", author: "Brianna Wiest", genre: ["romance"], read: true, banger: true, standalone: true, tier: null, synopsis: "Livro de autoconhecimento sobre como ultrapassar os nossos próprios bloqueios.", note: "Diferente de tudo o resto nesta lista. Muito poderoso." },
-  { id: 48, title: "A Ansiedade Não Manda em Mim", author: "Sara Figueiredo Costa", genre: ["romance"], read: true, banger: false, standalone: true, tier: null, synopsis: "Um guia prático e empático para lidar com a ansiedade.", note: "Não ficção mas muito útil." },
-  { id: 49, title: "Behind Closed Doors", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casal aparentemente perfeito. Mas por detrás das portas fechadas existe um pesadelo.", note: "Se adoraste a McFadden, B.A. Paris é a próxima autora a descobrir." },
+  { id: 46, title: "Nós Já Moramos Aqui", author: "Marcus Kliewer", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Uma casa onde as regras da física e do terror doméstico desafiam os novos moradores.", note: "Um suspense psicológico claustrofóbico e tenso." },
+  { id: 47, title: "A Montanha és Tu", author: "Brianna Wiest", genre: ["romance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Livro de autoconhecimento transformador sobre como superar a autossabotagem.", note: "Diferente de tudo o resto nesta lista. Muito poderoso." },
+  { id: 48, title: "A Ansiedade Não Manda em Mim", author: "Sara Costa", genre: ["romance"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Um guia de acolhimento prático para gerir as crises de ansiedade.", note: "Leitura de apoio essencial para a mente." },
+  { id: 49, title: "Behind Closed Doors", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "O casamento perfeito esconde o segredo mais macabro de todos entre quatro paredes.", note: "Nova autora ideal para fãs de Freida McFadden!" },
   { id: 50, title: "The Woman in the Window", author: "A.J. Finn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Uma psicóloga com agorafobia que passa os dias a espiar os vizinhos vê algo que não devia ver.", note: "Vai adorar se gostaste de 'A Mulher no Andar de Cima'." },
   { id: 51, title: "Gone Girl", author: "Gillian Flynn", genre: ["thriller","psych","darkromance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "No aniversário de casamento, Amy desaparece. O marido é suspeito.", note: "OBRIGATÓRIO. Vai mudar a forma como lês thrillers." },
-  { id: 52, title: "Sharp Objects", author: "Gillian Flynn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma jornalista regressa à cidade natal para cobrir o assassinato de duas jovens.", note: "Mais atmosférico e sombrio que 'Gone Girl'." },
+  { id: 52, solid: true, title: "Sharp Objects", author: "Gillian Flynn", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Uma jornalista regressa à cidade natal para cobrir o assassinato de duas jovens.", note: "Mais atmosférico e sombrio que 'Gone Girl'." },
   { id: 53, title: "Depois da Noite", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Um casal que parece perfeito. Mas todas as noites, quando o marido viaja, algo muda.", note: "Mais leve que 'Behind Closed Doors'." },
   { id: 54, title: "The Housemaid's Secret", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Millie, a criada, tem um novo emprego numa mansão onde tudo parece perfeito.", note: "Spin-off do universo McFadden." },
   { id: 55, title: "Twisted Love", author: "Ana Huang", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 1, synopsis: "O irmão mais velho da melhor amiga. Alex é frio, controlador, e proibido.", note: "Se gostaste do lado mais dark e possessivo dos romances, este é perfeito." },
   { id: 56, title: "Haunting Adeline", author: "H.D. Carlton", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 3, synopsis: "Um stalker que a observa de longe — e depois nem tão de longe.", note: "⚠️ Conteúdo muito dark. Só se estiveres no humor certo." },
-  { id: 57, title: "Como Matar a Tua Família", author: "Bella Mackie", genre: ["thriller","psych"], read: true, banger: true, standalone: true, tier: null, synopsis: "Grace planeia — metodicamente e sem remorsos — assassinar toda a família que nunca a quis.", note: "Hilariante e perturbador ao mesmo tempo." },
+  { id: 57, title: "Como Matar a Tua Família", author: "Bella Mackie", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Grace planeia friamente o assassinato de toda a família biológica que a rejeitou.", note: "Humor negro satírico com uma pitada de crime." },
   { id: 58, title: "All Your Perfects", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Um casal que se amava profundamente mas que o tempo e a dor foram desgastando.", note: "Um dos mais maduros e emocionalmente honestos da CoHo." },
   { id: 59, title: "Regretting You", author: "Colleen Hoover", genre: ["romance"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Uma mãe e uma filha adolescente que mal se entendem, unidas por uma tragédia.", note: "Mais focado em relação mãe-filha. Emotivo." },
   { id: 60, title: "Twisted Games", author: "Ana Huang", genre: ["darkromance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Uma princesa e o seu guarda-costas. Ela é intocável.", note: "Ler depois de 'Twisted Love'." },
@@ -766,6 +775,26 @@ var books = [
   { id: 68, title: "The Accomplice", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 3, synopsis: "Eddie Flynn defende um homem acusado de matar a sua melhor amiga.", note: "Livro 6 da série Eddie Flynn." },
   { id: 69, title: "Layla", author: "Colleen Hoover", genre: ["romance","thriller"], read: false, banger: true, standalone: true, tier: 2, synopsis: "Leeds e Layla estão apaixonados — até um incidente trágico mudar tudo.", note: "A CoHo mais estranha e surpreendente." },
   { id: 70, title: "Hopeless", author: "Colleen Hoover", genre: ["romance"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Sky não tem memória da sua infância. Dean Holder parece conhecê-la de algum lado.", note: "Tem elementos de mistério. Um dos favoritos das fãs antigas da CoHo." },
+  
+  // ── NOVOS LIVROS INJETADOS DA TUA LISTA ──
+  { id: 71, title: "Querida Debbie", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um thriller carregado de suspense psicológico característico da autora.", note: "Banger doméstico da Freida." },
+  { id: 72, title: "A Intrusa", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Alguém entra na rotina de uma família perfeita para desmoronar as suas mentiras.", note: "Viciante do início ao fim." },
+  { id: 73, title: "Mulher em Silêncio", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Segredos perigosos guardados por uma protagonista que sabe mais do que diz.", note: "Leitura rápida e fluida." },
+  { id: 74, title: "A Filha Perfeita", author: "Lucinda Berry", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um casal adota uma menina traumatizada, mas a sua presença transforma o lar num pesadelo.", note: "Thriller psicológico perturbador." },
+  { id: 75, title: "Mulher em Queda", author: "Colleen Hoover", genre: ["romance","thriller"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Suspense romântico dramático focado em superação e segredos familiares.", note: "Estilo CoHo com toques fortes de mistério." },
+  { id: 76, title: "Prometo Falhar", author: "Pedro Chagas Freitas", genre: ["romance"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Uma crónica poética sobre os caminhos imperfeitos do amor e das relações humanas.", note: "Excelente para desanuviar a mente dos thrillers." },
+  { id: 77, title: "The Housemaid is Watching", author: "Freida McFadden", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Livro 4 da série A Criada (ainda não traduzido oficialmente em Portugal).", note: "Sequência direta muito antecipada da Millie!" },
+  { id: 78, title: "Losing Hope", author: "Colleen Hoover", genre: ["romance"], read: false, banger: false, standalone: false, tier: 2, synopsis: "A mesma história emocionante de Hopeless, mas contada pela perspetiva do Holder.", note: "Essencial para fãs do casal de Hopeless." },
+  { id: 79, title: "Twisted", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 2, synopsis: "Livro 2 da série Eddie Flynn. Mentiras perigosas e reviravoltas de tribunal.", note: "Falta arranjar o Livro 3 (The Devil's Advocate)." },
+  { id: 80, title: "The Devil's Advocate", author: "Steve Cavanagh", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 3, synopsis: "Livro 3 da série Eddie Flynn. Um caso de homicídio brutal no sul dos Estados Unidos.", note: "Mais um grande thriller legal do autor." },
+  { id: 81, title: "Tese de Morte", author: "Raphael Montes", genre: ["thriller","psych"], read: false, banger: true, standalone: false, tier: 2, synopsis: "O mistério universitário que faltava para fechar a coleção do aclamado autor.", note: "Estilo sombrio e genial do Montes." },
+  { id: 82, title: "Pequenas Grandes Mentiras", author: "Liane Moriarty", genre: ["thriller"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Três mulheres cruzam-se numa escola primária onde um homicídio chocante acontece.", note: "Romance banger adaptado para série!" },
+  { id: 83, title: "Nove Desconhecidos", author: "Liane Moriarty", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 2, synopsis: "Nove pessoas reúnem-se num retiro de bem-estar isolado que esconde segredos obscuros.", note: "Suspense inteligente." },
+  { id: 84, title: "The Retreat", author: "B.A. Paris", genre: ["thriller","psych"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um mistério sufocante localizado numa ilha isolada carregada de traumas passados.", note: "Thriller banger de suspense psicológico." },
+  { id: 85, title: "The Wives", author: "Tarryn Fisher", genre: ["thriller","psych","darkromance"], read: false, banger: true, standalone: true, tier: 1, synopsis: "Um thriller dark viciante sobre uma mulher casada em poligamia que descobre segredos das outras esposas.", note: "Muito viciante!" },
+  { id: 86, title: "The Gift", author: "Desconhecido", genre: ["thriller"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Suspense envolvendo focado nas consequências inesperadas de uma oferta misteriosa.", note: "Da lista extra de novos títulos." },
+  { id: 87, title: "Baby city", author: "Desconhecido", genre: ["thriller"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Narrativa peculiar repleta de mistérios urbanos envolventes.", note: "Da lista extra de novos títulos." },
+  { id: 88, title: "Suicide Med", author: "Desconhecido", genre: ["thriller","psych"], read: false, banger: false, standalone: true, tier: 3, synopsis: "Thriller psicológico médico com dilemas éticos sombrios e perigosos.", note: "Da lista extra de novos títulos." }
 ];
 
 // ── SUPABASE SYNC ─────────────────────────────────────────────────────────────
@@ -937,6 +966,13 @@ function renderGenreGrid(gridId, genreFilter, progressId) {
   }
 }
 
+function renderBuyGrid() {
+  var grid = document.getElementById('buyGrid');
+  grid.innerHTML = '';
+  var filtered = books.filter(function(b) { return !b.read; });
+  filtered.forEach(function(b) { grid.appendChild(createBookCard(b)); });
+}
+
 function applySort(arr, sort) {
   var sorted = arr.slice();
   if (sort === 'az') sorted.sort(function(a,b) { return a.title.localeCompare(b.title, 'pt'); });
@@ -974,7 +1010,7 @@ function renderAuthors() {
   grid.innerHTML = '';
   var authorData = [
     { name: "Freida McFadden", meta: "Thriller Psicológico · Autora Favorita", desc: "Rainha absoluta do thriller doméstico. Cada livro tem um twist que não vês a vir.", books: books.filter(function(b) { return b.author === "Freida McFadden"; }) },
-    { name: "Colleen Hoover", meta: "Romance · Dark Romance", desc: "A rainha do BookTok. Escreve histórias de amor que destroçam o coração e o recolam.", books: books.filter(function(b) { return b.author === "Colleen Hoover"; }) },
+    { name: "Colleen Hoover", meta: "Romance · Dark Romance", desc: "A rainha do BookTok. Escreve histórias de amor que destroçam o coração.", books: books.filter(function(b) { return b.author === "Colleen Hoover"; }) },
     { name: "Alex Michaelides", meta: "Thriller Psicológico · Atmosférico", desc: "Escreve thrillers intelectuais com uma elegância rara.", books: books.filter(function(b) { return b.author === "Alex Michaelides"; }) },
     { name: "Gillian Flynn", meta: "Thriller · Dark", desc: "A escritora que inventou o 'dark domestic thriller'.", books: books.filter(function(b) { return b.author === "Gillian Flynn"; }) },
     { name: "Lisa Jewell", meta: "Thriller · Drama Familiar", desc: "Especialista em thrillers sobre famílias com segredos enterrados.", books: books.filter(function(b) { return b.author === "Lisa Jewell"; }) },
@@ -997,8 +1033,8 @@ function renderSeries() {
   var grid = document.getElementById('seriesGrid');
   grid.innerHTML = '';
   var seriesDefs = [
-    { name: "🔪 Trilogia da Criada", author: "Freida McFadden", color: "var(--accent3)", bg: "rgba(251,113,133,0.08)", order: ["A Criada Está a Ver", "O Segredo da Criada", "O Casamento da Criada"] },
-    { name: "🔪 Série Eddie Flynn", author: "Steve Cavanagh", color: "var(--accent)", bg: "rgba(192,132,252,0.08)", order: ["Thirteen", "Fifty Fifty", "The Accomplice"] },
+    { name: "🔪 Trilogia da Criada", author: "Freida McFadden", color: "var(--accent3)", bg: "rgba(251,113,133,0.08)", order: ["A Criada Está a Ver", "O Segredo da Criada", "O Casamento da Criada", "The Housemaid is Watching"] },
+    { name: "🔪 Série Eddie Flynn", author: "Steve Cavanagh", color: "var(--accent)", bg: "rgba(192,132,252,0.08)", order: ["Twisted", "The Devil's Advocate", "Thirteen", "Fifty Fifty", "The Accomplice"] },
     { name: "🖤 Série Twisted", author: "Ana Huang", color: "var(--accent2)", bg: "rgba(244,114,182,0.08)", order: ["Twisted Love", "Twisted Games", "Twisted Hate", "Twisted System"] },
     { name: "🧠 Trilogia Dark — Gillian Flynn", author: "Gillian Flynn", color: "#a78bfa", bg: "rgba(167,139,250,0.08)", order: ["Gone Girl", "Sharp Objects", "Dark Places"] },
     { name: "🌹 Universo It Ends With Us", author: "Colleen Hoover", color: "var(--accent2)", bg: "rgba(244,114,182,0.08)", order: ["O Lado Feio do Amor", "Uma Segunda Chance", "It Ends With Us — Livro 3"] },
@@ -1029,11 +1065,12 @@ function renderSeries() {
 
 function updateStats() {
   var total = books.length;
+  var unreadCount = books.filter(function(b) { return !b.read; }).length;
   var read = books.filter(function(b) { return b.read; }).length;
   var pct = Math.round(read / total * 100);
   document.getElementById('statTotal').textContent = total;
   document.getElementById('statRead').textContent = read;
-  document.getElementById('statUnread').textContent = total - read;
+  document.getElementById('statUnread').textContent = unreadCount;
   document.getElementById('statPct').textContent = pct + '%';
   document.getElementById('progressText').textContent = read + ' / ' + total + ' lidos';
   document.getElementById('progressFill').style.width = pct + '%';
@@ -1042,6 +1079,7 @@ function updateStats() {
   document.getElementById('tcRomance').textContent = books.filter(function(b) { return b.genre.includes('romance'); }).length;
   document.getElementById('tcDark').textContent = books.filter(function(b) { return b.genre.includes('darkromance'); }).length;
   document.getElementById('tcPsych').textContent = books.filter(function(b) { return b.genre.includes('psych'); }).length;
+  document.getElementById('tcBuy').textContent = unreadCount;
 }
 
 function renderAll() {
@@ -1050,6 +1088,7 @@ function renderAll() {
   renderGenreGrid('romanceGrid', 'romance', 'gpRomance');
   renderGenreGrid('darkGrid', 'darkromance', 'gpDark');
   renderGenreGrid('psychGrid', 'psych', 'gpPsych');
+  renderBuyGrid();
   renderSeries();
   renderOrderGrid();
   renderAuthors();
@@ -1058,7 +1097,6 @@ function renderAll() {
 
 // ── EVENT DELEGATION ──────────────────────────────────────────────────────────
 document.addEventListener('click', function(e) {
-  // Tab buttons
   var tabBtn = e.target.closest('[data-tab]');
   if (tabBtn) {
     document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
@@ -1068,7 +1106,6 @@ document.addEventListener('click', function(e) {
     tabBtn.classList.add('active');
     return;
   }
-  // Filter buttons
   var filterBtn = e.target.closest('[data-filter]');
   if (filterBtn) {
     document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1076,7 +1113,6 @@ document.addEventListener('click', function(e) {
     renderAllGrid(filterBtn.dataset.filter, currentSort);
     return;
   }
-  // Sort buttons
   var sortBtn = e.target.closest('[data-sort]');
   if (sortBtn) {
     document.querySelectorAll('.sort-btn').forEach(function(b) { b.classList.remove('active'); });
@@ -1084,13 +1120,11 @@ document.addEventListener('click', function(e) {
     renderAllGrid(currentFilter, sortBtn.dataset.sort);
     return;
   }
-  // Toggle read
   var toggleBtn = e.target.closest('[data-toggle]');
   if (toggleBtn) {
     toggleRead(parseInt(toggleBtn.dataset.toggle, 10), e);
     return;
   }
-  // Stars
   var star = e.target.closest('[data-n]');
   if (star && star.classList.contains('star')) {
     setRating(parseInt(star.dataset.bookid, 10), parseInt(star.dataset.n, 10));
@@ -1098,7 +1132,6 @@ document.addEventListener('click', function(e) {
   }
 });
 
-// Star hover
 document.addEventListener('mouseover', function(e) {
   var star = e.target.closest('[data-n]');
   if (star && star.classList.contains('star')) {
@@ -1122,7 +1155,6 @@ document.addEventListener('mouseout', function(e) {
   }
 });
 
-// Note textarea
 document.addEventListener('input', function(e) {
   var ta = e.target.closest('.personal-note-textarea');
   if (ta && ta.dataset.bookid) {
@@ -1130,7 +1162,6 @@ document.addEventListener('input', function(e) {
   }
 });
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
 loadLocalState();
 syncFromCloud();
 </script>
